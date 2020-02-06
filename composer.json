@@ -1,0 +1,22 @@
+{
+    "name": "fictional/payroll-dates-generator",
+    "type": "library",
+    "license": "MIT",
+    "description": "Small command-line utility to generate csv file for a year salaries/bonus payment dates",
+    "require": {
+        "php": "^7.4"
+    },
+    "authors": [
+        {
+            "name": "Ahmed Raafat",
+            "email": "ahmed.raafat1412@gmail.com",
+            "homepage": "https://github.com/AhmedRaafat14/"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Fictional\\SheetsGenerator\\": "src"
+        }
+    }
+}

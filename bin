@@ -1,0 +1,54 @@
+#!/usr/bin/env php
+<?php
+
+include_once dirname(__FILE__)."/vendor/autoload.php";
+
+set_time_limit(0);
+
+use Fictional\SheetsGenerator\Util\CSV;
+use Fictional\SheetsGenerator\Generator\PaymentDatesGenerator;
+
+// command: ./bin --salary-sheet --generate
+if (in_array("--salary-sheet", array_values($argv))) {
+    if (in_array("--generate", array_values($argv))) {
+        $currentYear = date('Y');
+        foreach ($argv as $option) {
+            if (strpos($option, "year=")) {
+                $option = explode("=", $option);
+                $currentYear = $option[1];
+                break;
+            }
+        }
+
+        $sheetName = "{$currentYear}_salaryAndBonusPaymentDays";
+        foreach ($argv as $option) {
+            if (strpos($option, "name=")) {
+                $option = explode("=", $option);
+                $sheetName = $option[1];
+                break;
+            }
+        }
+
+        $sheetPath = "result";
+        foreach ($argv as $option) {
+            if (strpos($option, "path=")) {
+                $option = explode("=", $option);
+                $sheetPath = $option[1];
+                break;
+            }
+        }
+
+        if (!file_exists($sheetPath)) {
+            mkdir($sheetPath, 0777, true);
+        } else {
+            if (!is_dir($sheetPath)) {
+                die("The provided path is file please provide correct directory path!\n");
+            }
+        }
+
+        $csv = new CSV($sheetName, $sheetPath);
+        $salaryGenerator = new PaymentDatesGenerator($csv, $currentYear);
+
+        $salaryGenerator->generate();
+    }
+}
